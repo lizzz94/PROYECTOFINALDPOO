@@ -16,7 +16,16 @@ import java.time.format.DateTimeFormatter;
 
 public class main {
 
-	public static void main(String[] args) {
+	
+	public static String ingresar (String usuario, String contrasena) {
+		
+		return login.verifyUser(usuario, contrasena);
+	
+		
+		
+	}
+	
+	public static void main() {
 		
 		Scanner escaner = new Scanner(System.in);
 		
@@ -162,10 +171,9 @@ public class main {
 	}
 }
 	
-	
 	public static void next_consola(String rol, String usuario, String contrasena) {
 		
-
+		
 		if (rol.equals("ADMIN")) {
 			
 			administrator_main.consola(usuario, contrasena);

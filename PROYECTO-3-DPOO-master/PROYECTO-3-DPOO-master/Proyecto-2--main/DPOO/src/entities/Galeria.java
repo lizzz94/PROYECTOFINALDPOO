@@ -1,9 +1,10 @@
 package entities;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.List;
-
+import Persistencia.piezas_persistence;
 import logic.Cashier;
 import logic.Comprador;
 import logic.Empleado;
@@ -21,6 +22,69 @@ public class Galeria {
 	private static Hashtable<String, Comprador> compradores = new Hashtable<>();
 	private static Hashtable<String, Comprador> propietarios = new Hashtable<>();
 	public static List<Pieza> piezas = new ArrayList<Pieza>();
+
+	public static Pieza convertirStringAPieza(String dato) {
+		String[] campos = dato.split(",");
+		String titulo = campos[0];
+		int anio = Integer.parseInt(campos[1]);
+		String lugar_creacion = campos[2];
+		ArrayList<String> autores = new ArrayList<>(Arrays.asList(campos[3].split("/")));
+		int valor_fijo = Integer.parseInt(campos[4]);
+		boolean bloqueado = Boolean.parseBoolean(campos[5]);
+		Comprador propietario = Galeria.buscarpropietario(campos[6]);
+		String tipo_pieza = campos[7];
+		int codigo = Integer.parseInt(campos[8]);
+		String tiempo_ingreso = campos[9];
+		boolean subastado = Boolean.parseBoolean(campos[10]);
+		boolean aceptado = Boolean.parseBoolean(campos[11]);
+	
+		switch (tipo_pieza) {
+			case "Escultura":
+				Double altura = Double.valueOf(campos[12]);
+				Double ancho = Double.valueOf(campos[13]);
+				Double profundidad = Double.valueOf(campos[14]);
+				ArrayList<String> materiales = new ArrayList<>(Arrays.asList(campos[15].split("/")));
+				Double peso = Double.valueOf(campos[16]);
+				boolean electricidad = Boolean.parseBoolean(campos[17]);
+				String detalles = campos[18];
+				return new Escultura(titulo, anio, lugar_creacion, autores, valor_fijo, bloqueado, propietario, tipo_pieza, subastado, aceptado, altura, ancho, profundidad, materiales, peso, electricidad, detalles);
+			case "Fotografia":
+				String formato = campos[12];
+				String resolucion = campos[13];
+				return new Fotografia(titulo, anio, lugar_creacion, autores, valor_fijo, bloqueado, propietario, tipo_pieza, subastado, aceptado, formato, resolucion);
+			case "Pintura":
+				Double alto = Double.valueOf(campos[12]);
+				Double anchoPintura = Double.valueOf(campos[13]);
+				ArrayList<String> materialesPintura = new ArrayList<>(Arrays.asList(campos[14].split("/")));
+				Double pesoPintura = Double.valueOf(campos[15]);
+				String detallesPintura = campos[16];
+				return new Pintura(titulo, anio, lugar_creacion, autores, valor_fijo, bloqueado, propietario, tipo_pieza, subastado, aceptado, alto, anchoPintura, materialesPintura, pesoPintura, detallesPintura);
+			default:
+				throw new IllegalArgumentException("Tipo de pieza desconocido: " + tipo_pieza);
+		}
+	}
+
+	public static ArrayList<Subasta> getSubastas() {
+        return Subastas;
+	}
+
+	public static void cargarPiezas() {
+        ArrayList<String> datos = piezas_persistence.read_info();
+        for (String dato : datos) {
+            // se convierte la cadena de datos en una instancia de Pieza
+            Pieza pieza = convertirStringAPieza(dato);
+           // piezas.put(pieza.getTitulo(), pieza);
+        }
+	}
+
+	public static Inventario getInventario() {
+        return inventario;
+    }
+	
+	public static ArrayList<Subasta> subastas(){
+		return Subastas;
+	}
+
 
 	public static List<Pieza> getPiezas() {
 		return piezas;

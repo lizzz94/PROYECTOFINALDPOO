@@ -16,6 +16,7 @@ public class Comprador extends Usuario {
 	
 	private String nombre;
 	private String apellido;
+	private String contrasena;
 	private  int cedula;
 	private  int contacto;
 	private  int ingresos;
@@ -29,6 +30,7 @@ public class Comprador extends Usuario {
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.cedula = cedula;
+		this.contrasena = contrasena;
 		this.contacto = contacto;
 		this.ingresos = ingresos;
 		this.propietario = propietario;
@@ -42,7 +44,10 @@ public class Comprador extends Usuario {
 	public String getapellido() {
 		return apellido;
 	}
-	
+
+	public String getcontrasena() {
+		return contrasena;
+	}	
 	
 	public boolean ispropietario (Comprador comprador) {
 		

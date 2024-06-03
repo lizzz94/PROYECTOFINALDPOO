@@ -12,22 +12,10 @@ public class Pintura extends Pieza{
 	private Double peso;
 	private String detalleinstalacion;
 	
-	
-	
-	public Pintura(String titulo, int anio, String creacion, ArrayList<String> autores, int valor_fijo, boolean bloqueado, Comprador propietario, String tipo_pieza, boolean subastado, boolean aceptado, Double alto, Double ancho, ArrayList<String> materiales, Double peso, String detalles) {
-		
-		super(titulo, anio, creacion, autores, valor_fijo, bloqueado, propietario, tipo_pieza, subastado, aceptado);
-		this.alto = alto;
-		this.ancho = ancho;
-		this.materiales = materiales;
-		this.peso = peso;
-		this.detalleinstalacion = detalles;
+	public Pintura(String titulo, int anio, String creacion, ArrayList<String> autores, int valor_fijo, boolean bloqueado, Comprador propietario, String tipo_pieza, boolean subastado, boolean aceptado) {
+	    super(titulo, anio, creacion, autores, valor_fijo, bloqueado, propietario, tipo_pieza, subastado, aceptado);
 	}
 	
-    public Double getAlto() {
-        return alto;
-    }
-
     public void setAlto(Double alto) {
         this.alto = alto;
     }

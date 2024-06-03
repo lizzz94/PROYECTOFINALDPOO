@@ -1,206 +1,158 @@
-package Persistencia;
-
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+package entities;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
-
-import entities.Escultura;
-import entities.Fotografia;
-import entities.Galeria;
-import entities.Pintura;
-import entities.Video;
-import logic.Cashier;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import logic.Comprador;
-import logic.Operador;
-import logic.admin;
 
-public class piezas_persistence {
+public abstract class Pieza {
 	
+	protected String titulo;
+	protected int anio;
+	protected String lugar_creacion;
+	protected String autores;
+	protected int valor_fijo;
+	protected boolean bloqueado;
+	protected Comprador propietario;
+	protected String tipo_pieza;
+	protected int codigo;
+	protected String tiempo_ingreso;
+	protected boolean subastado;
+	protected boolean aceptado;
 	
-	public static ArrayList<String> read_info () {
+	public Pieza (String titulo, int anio, String creacion, ArrayList<String> autores2, int valor_fijo, boolean bloqueado, Comprador propietario, String tipo_pieza, boolean subastado, boolean aceptado){
 		
-		ArrayList<String> datos = new ArrayList<>();
 		
-		File archivo = null; 
-        FileReader fr = null;
-        BufferedReader br = null;
-        String linea = null;
- 
-        try {
-
-            archivo = new File("piezas.csv");
-
-            fr = new FileReader(archivo);
-  
-            br = new BufferedReader(fr);
- 
-            while ((linea = br.readLine()) != null) {
-            	
-                	
-                	String[] strings = linea.split(";");
-                	    
-                	
-                	for (int i = 0; i < strings.length; i++) {
-                		datos.add(strings[i]);
-                		
-                		String [] lines = strings[i].split(",");  
-              
-                		for (int j = 0; j < lines.length; j++) {
-                			
-                	
-                		ArrayList<String> lista_autores = new ArrayList();
-                	    String titulo = lines[0];
-                	    int anio = Integer.parseInt(lines[1]);
-                	    String lugar_creacion = lines[2];
-       
-                	  
-                	    String [] autores = lines[3].split("/"); 
-                	    
-                	    for (int k = 0; k < autores.length; k++) {
-                	    	lista_autores.add(autores[k]);
-                	    	
-						}    
-   
-                	    int valor_fijo = Integer.parseInt(lines[4]);
-                	    boolean bloqueado = Boolean.parseBoolean(lines[5]);
-                	    
-                	    Comprador propietario = Galeria.buscarpropietario(lines[6]);
-
-                	    String tipo_pieza = lines[7];
-            		    int codigo = Integer.parseInt(lines[8]);
-            		    String tiempo_ingreso = lines[9];
-            		    boolean subastado = Boolean.parseBoolean(lines[10]);
-            		    boolean aceptado = Boolean.parseBoolean(lines[11]);
-            		    
-            			if (tipo_pieza.equals("Escultura")){
-            				
-            				Double altura = Double.valueOf(lines[12]);
-            				Double ancho = Double.valueOf(lines[13]);
-            				Double profundidad = Double.valueOf(lines[14]);
-            
-            				
-            				ArrayList<String> lista_materiales = new ArrayList();
-            				
-            				String [] materiales = lines[3].split("/"); 
-                    	    
-                    	    for (int k = 0; k < materiales.length; k++) {
-                    	    	lista_materiales.add(materiales[k]);
-                    	    	
-    						}  
-            				
-            				
-            				
-            				Double peso = Double.valueOf(lines[16]);
-            				boolean electricidad = Boolean.parseBoolean(lines[17]);
-            				String detalles = lines[18];
-            				
-            				
-            				
-            				
-            			}if (tipo_pieza.equals("Fotografía")){
-            				
-            				String formato = lines[12];
-            				String resolucion = lines[13];
-            				
-            				
-            				
-            			}if (tipo_pieza.equals("Pintura")){
-            				
-            				Double altura = Double.valueOf(lines[12]);
-            				Double ancho = Double.valueOf(lines[13]);
-                            ArrayList<String> lista_materiales = new ArrayList();
-            				
-            				String [] materiales = lines[3].split("/"); 
-                    	    
-                    	    for (int k = 0; k < materiales.length; k++) {
-                    	    	lista_materiales.add(materiales[k]);
-                    	    	
-    						}
-            				
-            				
-            				Double peso = Double.valueOf(lines[15]);
-            		        String detalles_instalacion = lines[16];
-            				
-            				
-            				
-            			}if (tipo_pieza.equals("Vídeo")){
-            				
-            				int duracion = Integer.parseInt(lines[12]);
-            				String formato = lines[13];
-            		        String genero = lines[14];
-           	    
-            		        
-            		        
-            		        
-            			}
-            			
-            			
-            			
-            		    
-            		    }
-            			
-            			
-            		    
-					}
-           
-				}
- 
-            return datos;
-
-        }catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (fr != null) {
-                    fr.close();
-                }
-            } catch (Exception e2) {
-                e2.printStackTrace();
-            }
-        }
-		return null; 
+		this.titulo = titulo;
+		this.anio = anio;
+		this.lugar_creacion = creacion;
+		this.autores = autores2;
+		this.valor_fijo = valor_fijo;
+		this.bloqueado = bloqueado;
+		this.propietario = propietario;
+		this.tipo_pieza = tipo_pieza;
+		this.codigo = generar_codigo();
+		this.tiempo_ingreso = tiempo_ingreso();
+		this.subastado = subastado;
+		this.aceptado = aceptado;
+		
 	}
 	
+    public Pieza(String titulo2, int anio2, String creacion, ArrayList<String> autores2, int valor_fijo2,
+            boolean bloqueado2, Comprador propietario2, String tipo_pieza2, boolean subastado2, boolean aceptado2) {
+        //TODO Auto-generated constructor stub
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public int getAnio() {
+        return anio;
+    }
+
+    public String getLugar_creacion() {
+        return lugar_creacion;
+    }
+
+    public String getAutores() {
+        return autores;
+    }
+
+    public double getValor_fijo() {
+        return valor_fijo;
+    }
+
+    public boolean isBloqueado() {
+        return bloqueado;
+    }
+
+    public Comprador getPropietario() {
+        return propietario;
+    }
+
+    public String getTipo_pieza() {
+        return tipo_pieza;
+    }
+
+    public int getCodigo() {
+        return codigo;
+    }
+
+    public String getTiempo_ingreso() {
+        return tiempo_ingreso;
+    }
+
+    public boolean isSubastado() {
+        return subastado;
+    }
+
+    public boolean isAceptado() {
+        return aceptado;
+    }
 	
+	public String tiempo_ingreso() {
+		
+		String UltimaActualizacion = DateTimeFormatter.ofPattern("MMM dd yyyy, hh:mm:ss a")
+                .format(LocalDateTime.now());
+		
+		return UltimaActualizacion;
+			
+	}
 	
-    public static void add_info(String data) {
-    	
-    	
-    	BufferedWriter bw = null;
-        FileWriter fw = null;
-
-        try {
-
-            File file = new File("piezas.csv");
-            
-            if (!file.exists()) {
-                file.createNewFile();
-            }
-           
-            fw = new FileWriter(file.getAbsoluteFile(), true);
-            bw = new BufferedWriter(fw);
-            bw.write(data);
-            System.out.println("¡Pieza agregada correctamente!");
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                   
-                if (bw != null)
-                    bw.close();
-                if (fw != null)
-                    fw.close();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        }
-    	
-
+	public int generar_codigo() {
+		
+		int codigoGenerado = Math.abs(titulo.hashCode() + anio + lugar_creacion.hashCode() +
+                autores.hashCode() + valor_fijo + (bloqueado ? 1 : 0) + propietario.hashCode() +
+                tipo_pieza.hashCode());
+        return codigoGenerado;
+	}
+	
+	public static String leerpieza(Pieza pieza) {
+		
+		String stringfinal = "";
+		
+		System.out.println((pieza.getAutores()).get(0));
+		
+		String lista_autores = (pieza.getAutores()).get(0);
+		
+		int tamanio_lista = pieza.getAutores().size();
+		
+		if (tamanio_lista > 2) {
+		for (int i = 1; i < pieza.getAutores().size(); i++) {
+			lista_autores = lista_autores + "/" + pieza.getAutores().get(i);
+		}}
+		
+		
+		 stringfinal = pieza.getTitulo() + "," + String.valueOf(pieza.getAnio()) + "," + pieza.getLugar_creacion() + "," + lista_autores + "," +
+		        String.valueOf(pieza.getValor_fijo()) + "," + String.valueOf(pieza.isBloqueado()) + "," +
+		        pieza.getPropietario().getusuario() + "," + pieza.getTipo_pieza() + "," + String.valueOf(pieza.getCodigo()) + "," +
+		        pieza.getTiempo_ingreso() + "," + String.valueOf(pieza.isSubastado()) + "," +
+		        String.valueOf(pieza.isAceptado()) + ",";
+		
+		return stringfinal;
+		
+		
 	}
 
+
+    public String infoconsignarpieza() {
+
+        throw new UnsupportedOperationException("Unimplemented method 'infoconsignarpieza'");
+    }
+
+    public void setVendida(boolean b) {
+      
+        throw new UnsupportedOperationException("Unimplemented method 'setVendida'");
+    }
+
+	public static int getPrecio() {
+		
+		throw new UnsupportedOperationException("Unimplemented method 'getPrecio'");
+	}
+
+	
 }

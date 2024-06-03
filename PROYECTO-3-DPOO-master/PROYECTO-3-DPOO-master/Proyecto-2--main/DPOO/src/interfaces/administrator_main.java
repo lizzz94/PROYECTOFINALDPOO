@@ -7,7 +7,6 @@ import entities.Galeria;
 import entities.Pieza;
 import logic.Comprador;
 import entities.Pieza; 
-import entities.Pieza; 
 
 public class administrator_main {
 	
